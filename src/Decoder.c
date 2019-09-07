@@ -4535,13 +4535,16 @@ static ZydisStatus ZydisDecodeInstruction(ZydisDecoderContext* context,
                         break;
                     }
                     ZYDIS_CHECK(ZydisDecodeOperands(context, instruction, definition));
-                    const ZydisRegister reg =
-                        instruction->operands[instruction->operandCount - 1].reg.value;
-                    if ((reg == ZYDIS_REGISTER_FLAGS ) || (reg == ZYDIS_REGISTER_EFLAGS) ||
-                        (reg == ZYDIS_REGISTER_RFLAGS))
-                    {
-                        ZydisSetAccessedFlags(instruction, definition);
-                    }
+					if (instruction->operandCount)
+					{
+						const ZydisRegister reg =
+							instruction->operands[instruction->operandCount - 1].reg.value;
+						if ((reg == ZYDIS_REGISTER_FLAGS) || (reg == ZYDIS_REGISTER_EFLAGS) ||
+							(reg == ZYDIS_REGISTER_RFLAGS))
+						{
+							ZydisSetAccessedFlags(instruction, definition);
+						}
+					}
                 }
 
                 return ZYDIS_STATUS_SUCCESS;
